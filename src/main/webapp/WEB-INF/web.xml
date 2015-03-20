@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee  http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         version="2.5">
+    <!--index-->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <!--data sources-->
+    <resource-ref>
+        <description>Resource reference to a database "pizza" in PostgreSQL</description>
+        <res-ref-name>jdbc/pizza</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+    </resource-ref>
+
+    <filter>
+        <filter-name>LogFilter</filter-name>
+        <filter-class>com.mkurnikov.pizza.web.LogFilter</filter-class>
+        <init-param>
+            <param-name>test-param</param-name>
+            <param-value>Init Param</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>LogFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>UnauthorizedUserFilter</filter-name>
+        <filter-class>com.mkurnikov.pizza.web.UnauthorizedUserFilter</filter-class>
+        <init-param>
+            <param-name>urlsToPass</param-name>
+            <param-value>/login /register</param-value>
+        </init-param>
+    </filter>
+    <!--<filter-mapping>-->
+        <!--<filter-name>UnauthorizedUserFilter</filter-name>-->
+        <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
+
+    <!--hello servlet-->
+    <servlet>
+        <servlet-name>HelloWorld</servlet-name>
+        <servlet-class>com.mkurnikov.pizza.web.HelloWorldServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HelloWorld</servlet-name>
+        <url-pattern>/hello</url-pattern>
+    </servlet-mapping>
+
+    <!--login servlet-->
+    <servlet>
+        <servlet-name>Login</servlet-name>
+        <servlet-class>com.mkurnikov.pizza.web.LoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+
+    <!--register servlet-->
+    <servlet>
+        <servlet-name>Register</servlet-name>
+        <servlet-class>com.mkurnikov.pizza.web.RegisterServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Register</servlet-name>
+        <url-pattern>/register</url-pattern>
+    </servlet-mapping>
+
+    <!--home servlet-->
+    <servlet>
+        <servlet-name>Home</servlet-name>
+        <servlet-class>com.mkurnikov.pizza.web.HomeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Home</servlet-name>
+        <url-pattern>/home</url-pattern>
+    </servlet-mapping>
+
+    <!--session tracker-->
+    <servlet>
+        <servlet-name>SessionTracker</servlet-name>
+        <servlet-class>com.mkurnikov.pizza.web.SessionTrackServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SessionTracker</servlet-name>
+        <url-pattern>/session</url-pattern>
+    </servlet-mapping>
+
+    <!--list parameters-->
+    <servlet>
+        <servlet-name>List</servlet-name>
+        <servlet-class>com.mkurnikov.pizza.web.ListParametersServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>List</servlet-name>
+        <url-pattern>/list</url-pattern>
+    </servlet-mapping>
+
+    <!--redirect to login.html-->
+    <servlet>
+        <servlet-name>Redirect</servlet-name>
+        <servlet-class>com.mkurnikov.pizza.web.RedirectToLoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Redirect</servlet-name>
+        <url-pattern>/redirect</url-pattern>
+    </servlet-mapping>
+</web-app>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

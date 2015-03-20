@@ -1,0 +1,18 @@
+{
+  "name": "TW-UI-HTML",
+  "version": "0.0.0",
+  "description": "ERROR: No README.md file found!",
+  "main": "Gruntfile.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "body-parser": "~1.12.0",
+    "express": "~4.12.2",
+    "morgan": "~1.5.1",
+    "path": "~0.11.14"
+  },
+  "author": "",
+  "license": "BSD",
+  "gitHead": "ca67660dd611e4669df3a0d77ae66fd395e3d1a1"
+}
