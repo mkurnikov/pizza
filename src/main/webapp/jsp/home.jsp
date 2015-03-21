@@ -10,6 +10,14 @@
     <p>Hello, ${requestScope.login}</p>
     <p>Paths: ${requestScope.paths}</p>
     <p>Paths: ${requestScope.districts}</p>
+    <p>Error message: ${requestScope.error_message}</p>
+    <p>Shortest path: ${requestScope.shortest}</p>
+
+    <form action="/shortest" method="post">
+        <input type="text" name="source" placeholder="source"/>
+        <input type="text" name="destination" placeholder="destination"/>
+        <input type="submit" value="Find"/>
+    </form>
 
     <form action="/home" method="post">
         <input type="text" name="district1" placeholder="district1"/>
@@ -17,6 +25,6 @@
         <input type="text" name="travellingTime" placeholder="time"/>
         <input type="submit" value="Submit"/>
     </form>
-    <img src="/img/map.png" alt="Карта не загрузилась" width="482" height="371"/>
+    <img src="/img/map" alt="Карта не загрузилась" width="482" height="371"/>
 </body>
 </html>

@@ -15,9 +15,9 @@ public class DijkstraAlgorithm {
 	private Map<District, District> predecessors;
 	private Map<District, Double> distance;
 
-	public DijkstraAlgorithm(CityMap cityMap) {
-		this.nodes = cityMap.getAllDistricts();
-		this.edges = cityMap.getAllPaths();
+	public DijkstraAlgorithm(List<District> districts, List<Path> paths) {
+		this.nodes = districts;
+		this.edges = paths;
 	}
 
 	public void execute(District source) {
@@ -62,8 +62,7 @@ public class DijkstraAlgorithm {
 
 	private double getDistance(District node, District target) { //get distance from node to target from edges info
 		for (Path edge: edges) {
-			if (edge.firstDistrict.equals(node)
-					&& edge.secondDistrict.equals(target)) {
+			if (edge.isConnectDistricts(node, target)) {
 				return edge.travellingTime;
 			}
 		}

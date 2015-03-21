@@ -1,4 +1,4 @@
-package com.mkurnikov.pizza.web;
+package com.mkurnikov.pizza.web.filters;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServlet;

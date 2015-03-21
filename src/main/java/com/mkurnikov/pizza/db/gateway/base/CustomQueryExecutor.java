@@ -52,8 +52,8 @@ public abstract class CustomQueryExecutor {
 	final public Object execute() {
 		try {
 			ResultSet resultSet = null;
-			System.out.println(this.sql);
-			System.out.println(this.sql.startsWith("SELECT"));
+//			System.out.println(this.sql);
+//			System.out.println(this.sql.startsWith("SELECT"));
 			if (this.sql.startsWith("SELECT")) {
 				resultSet = this.preparedStatement.executeQuery();
 			} else {

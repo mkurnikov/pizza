@@ -20,6 +20,11 @@ public class Path {
 					", " + this.secondDistrict.toString() + ", " + this.travellingTime;
 		}
 
+		public boolean isConnectDistricts(District d1, District d2) {
+			return (this.firstDistrict.equals(d1) && this.secondDistrict.equals(d2)) ||
+					(this.firstDistrict.equals(d2) && this.secondDistrict.equals(d1));
+		}
+
 		public void save() {
 			this.firstDistrict.save();
 			this.secondDistrict.save();

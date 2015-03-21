@@ -20,4 +20,14 @@ public class District {
 			DistrictTableGateway.getInstance().addDistrict(this.name);
 		}
 	}
+
+	public int hashCode() {
+		return this.name.hashCode();
+	}
+
+	public boolean equals(Object district) {
+		if ( this == district ) return true;
+        if ( !(district instanceof District) ) return false;
+		return this.name.equals(((District) district).name);
+	}
 }

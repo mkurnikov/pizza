@@ -15,7 +15,7 @@ public class LogFilter implements Filter {
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 		String ipAddress = servletRequest.getRemoteAddr();
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
-		System.out.println("IP: " + "lalala");
+//		System.out.println("IP: " + "lalala");
 
 		filterChain.doFilter(servletRequest, servletResponse);
 	}

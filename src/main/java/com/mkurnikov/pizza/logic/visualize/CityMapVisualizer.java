@@ -1,6 +1,5 @@
 package com.mkurnikov.pizza.logic.visualize;
 
-import com.mkurnikov.pizza.logic.paths.models.District;
 import com.mkurnikov.pizza.logic.paths.models.Path;
 import com.mxgraph.model.mxCell;
 import com.mxgraph.model.mxGraphModel;
@@ -12,29 +11,67 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class CityMapVisualizer {
-//	private List<mxCell> districtCells = new ArrayList<>();
-//	private Map<String, mxCell> districtCells = new HashMap<>();
-// 	private List<mxCell> pathCells = new ArrayList<>();
 	private mxGraph graph = new mxGraph();
 	private Object parent = graph.getDefaultParent();
+	private Styles styles = new Styles();
+	private Set<mxCell> shortestPathEdges = null;
+	private Set<mxCell> shortestPathVertices = null;
+//	private Map<String, Object> defaultEdgesStyles = graph.getStylesheet().getDefaultEdgeStyle();
+//	private Map<String, Object> defaultVerticesStyles = graph.getStylesheet().getDefaultVertexStyle();
 
 	public CityMapVisualizer() {
 		init();
 	}
 
-	public void saveToImage(String fpath) {
-		BufferedImage image = mxCellRenderer.createBufferedImage(this.graph, null, 1,
-				Color.WHITE, true, null);
+	public void setDefaultStyles() {
+		for (Object cellObject: getCells().values()) {
+			mxCell cell = (mxCell) cellObject;
+			if (cell.isEdge()) {
+				changeCellStyles(cell, graph.getStylesheet().getDefaultEdgeStyle());
+				changeCellStyles(cell, styles.getUnactiveEdges());
+			}
+			if (cell.isVertex()) {
+				changeCellStyles(cell, graph.getStylesheet().getDefaultVertexStyle());
+				changeCellStyles(cell, styles.getUnactiveVertices());
+			}
+		}
+		System.out.println("styles defaulted");
+	}
+
+	public void setShortestPath(List<Path> shortestPath) {
+		graph.getModel().beginUpdate();
 		try {
-			ImageIO.write(image, "PNG", new File(fpath));
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+//			cells to change
+			shortestPathEdges = new HashSet<>();
+			shortestPathVertices = new HashSet<>();
+			for (Path edge: shortestPath) {
+				shortestPathVertices.add((mxCell) getCells().get(edge.firstDistrict.name));
+				shortestPathVertices.add((mxCell) getCells().get(edge.secondDistrict.name));
+
+				String edge_id = edge.firstDistrict.name + "-" + edge.secondDistrict.name;
+				shortestPathEdges.add((mxCell) getCells().get(edge_id));
+			}
+
+		} finally {
+			graph.getModel().endUpdate();
+		}
+	}
+
+	public void changeCellStyles(Object[] cells, Map<String, Object> styles) {
+		for (Map.Entry<String, Object> entry: styles.entrySet()) {
+			graph.setCellStyles(entry.getKey(), entry.getValue().toString(), cells);
+		}
+	}
+
+	public void changeCellStyles(Object cell, Map<String, Object> styles) {
+		for (Map.Entry<String, Object> entry: styles.entrySet()) {
+			if (entry.getValue() instanceof String) {
+				graph.setCellStyles(entry.getKey(), entry.getValue().toString(), new Object[] {cell});
+			}
 		}
 	}
 
@@ -42,10 +79,31 @@ public class CityMapVisualizer {
 		graph.getModel().beginUpdate();
 		try {
 			String id = path.firstDistrict.name + "-" + path.secondDistrict.name;
-			Object edge = graph.insertEdge(parent, id, path.travellingTime,
+			graph.insertEdge(parent, id, path.travellingTime,
 					getCells().get(path.firstDistrict.name), getCells().get(path.secondDistrict.name));
 		} finally {
 			graph.getModel().endUpdate();
+		}
+	}
+
+	public BufferedImage getAsImage() {
+		setDefaultStyles();
+		if (shortestPathEdges != null) {
+			changeCellStyles(shortestPathEdges.toArray(), styles.getActiveEdges());
+		}
+		if (shortestPathVertices != null) {
+			changeCellStyles(shortestPathVertices.toArray(), styles.getActiveVertices());
+		}
+		return mxCellRenderer.createBufferedImage(this.graph, null, 1,
+				Color.WHITE, true, null);
+	}
+
+	public void saveToImage(String fpath) {
+		BufferedImage image = getAsImage();
+		try {
+			ImageIO.write(image, "PNG", new File(fpath));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 

@@ -1,4 +1,4 @@
-package com.mkurnikov.pizza.web;
+package com.mkurnikov.pizza.web.servlets;
 
 import com.mkurnikov.pizza.logic.auth.AuthService;
 

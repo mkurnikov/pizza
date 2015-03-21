@@ -7,10 +7,11 @@ import com.mkurnikov.pizza.logic.paths.models.Path;
 import com.mkurnikov.pizza.logic.paths.shortest.DijkstraAlgorithm;
 import com.mkurnikov.pizza.logic.visualize.CityMapVisualizer;
 
-import java.util.List;
+import java.awt.image.BufferedImage;
+import java.util.*;
 
 public class CityMap {
-	private static CityMap instance = null;
+	private static CityMap instance = new CityMap();
 	public static CityMap getInstance() {
 		if (instance == null) {
 			instance = new CityMap();
@@ -18,49 +19,64 @@ public class CityMap {
 		return instance;
 	}
 
+	private List<District> districts = null;
+	private List<Path> paths = null;
+	private DijkstraAlgorithm dijkstraAlgorithm = null;
+	private List<Path> currentShortestPath = null;
+
 	private CityMap() {
 		paths = PathTableGateway.getInstance().getAllPaths();
 		districts = DistrictTableGateway.getInstance().getAllDistricts();
-//		dijkstraAlgorithm = new DijkstraAlgorithm(this);
+		dijkstraAlgorithm = new DijkstraAlgorithm(districts, paths);
 	}
 
-	private List<District> districts = null;
-	private List<Path> paths = null;
-	private DijkstraAlgorithm dijkstraAlgorithm;
-
-	public void addDistrict(String name) {
-		District district = new District(name);
-
-		districts.add(district);
-		dijkstraAlgorithm.addDistrict(district);
-		district.save();
-	}
-
-	public void addPath(String firstDistrictName, String secondDistrictName, float travellingTime) {
-		District first = new District(firstDistrictName);
-		District second = new District(secondDistrictName);
-		Path path = new Path(first, second, travellingTime);
-
-		paths.add(path);
-//		dijkstraAlgorithm.addPath(path);
-		path.save();
-	}
-
-	public void createImageWithCityMap() {
+	//	visualizer
+	private CityMapVisualizer initVisualizer() {
 		CityMapVisualizer visualizer = new CityMapVisualizer();
 		for (Path path: paths) {
 			visualizer.addEdge(path);
 		}
-		visualizer.saveToImage("/home/mkurnikov/_python/pizza_delivery/src/main/webapp/img/map.png");
+		if (currentShortestPath != null) {
+			visualizer.setShortestPath(currentShortestPath);
+		}
+		return visualizer;
 	}
 
+	public BufferedImage getCityMapGraphAsImage() {
+		CityMapVisualizer visualizer = initVisualizer();
+		return visualizer.getAsImage();
+	}
+
+	//	paths
 	public List<Path> getAllPaths() {
 		if (instance == null) {
 			throw new RuntimeException("map is not initialized");
 		}
 		return paths;
 	}
+	public void addPath(String firstDistrictName, String secondDistrictName, float travellingTime) {
+		District first = new District(firstDistrictName);
+		District second = new District(secondDistrictName);
+		Path path = new Path(first, second, travellingTime);
 
+		System.out.println("create path: " + path);
+		paths.add(path);
+		dijkstraAlgorithm.addPath(path);
+		path.save();
+		//	createImageWithCityMap();
+	}
+
+	public Path findPathCorrespondsToDistricts(District source, District destination) {
+		System.out.println("findPathDistricts(): " + source + ", " + destination);
+		for (Path path: paths) {
+			if (path.isConnectDistricts(source, destination)) {
+				return path;
+			}
+		}
+		throw new RuntimeException("Something is wrong with paths");
+	}
+
+	//	districts
 	public List<District> getAllDistricts() {
 		if (instance == null) {
 			throw new RuntimeException("map is not initialized");
@@ -72,7 +88,36 @@ public class CityMap {
 		return DistrictTableGateway.getInstance().isDistrictExists(districtName);
 	}
 
-	public List<Path> generateShortestWay(String place1, String place2) {
-		return null;
+	//  shortest paths
+	public List<Path> findShortestWay(District source, District destination) {
+		dijkstraAlgorithm.execute(source);
+		List<District> districtsPath = dijkstraAlgorithm.getShortestPath(destination);
+		List<Path> shortestWayInPaths = new ArrayList<>();
+
+		for(int i = 0; i < districtsPath.size() - 1; i++) {
+			District src = districtsPath.get(i);
+			District dest = districtsPath.get(i + 1);
+			Path path = findPathCorrespondsToDistricts(src, dest);
+			shortestWayInPaths.add(path);
+		}
+		currentShortestPath = shortestWayInPaths;
+		return shortestWayInPaths;
+	}
+
+	public Map<District, Double> generateDistanceMap(District source, List<District> destinations) {
+		dijkstraAlgorithm.execute(source);
+		Map<District, Double> distances = dijkstraAlgorithm.getDistancesFromSource();
+		distances.keySet().retainAll(destinations);
+		return distances;
+	}
+
+	public District getNearestNeighbour(District source, List<District> destinations) {
+		Map<District, Double> distances = generateDistanceMap(source, destinations);
+		return Collections.max(distances.entrySet(), new Comparator<Map.Entry<District, Double>>() {
+			@Override
+			public int compare(Map.Entry<District, Double> o1, Map.Entry<District, Double> o2) {
+				return o1.getValue() > o2.getValue() ? 1 : -1;
+			}
+		}).getKey();
 	}
 }
