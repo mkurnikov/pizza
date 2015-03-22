@@ -17,7 +17,7 @@ CREATE TABLE district (
 CREATE TABLE path (
   district_1 VARCHAR REFERENCES district(name),
   district_2 VARCHAR REFERENCES district(name),
-  travelling_time REAL NOT NULL CHECK (travelling_time > 0),
+  travelling_time REAL NOT NULL CHECK (travelling_time >= 0),
   PRIMARY KEY(district_1, district_2)
 );
 

@@ -34,9 +34,15 @@ public class ShortestPathServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		District currentLocation = new District("Красносельский");
-//		System.out.println("current location: " + currentLocation);
-		List<Pair<Order, List<Path>>> pathThroughOrders = PizzaSystem.getInstance().buildPathThroughOrders();
+		District initialLocation = new District(req.getParameter("startPosition"));
+		//renew graph
+		PizzaSystem.getInstance().showOrderCompletionPath(null);
+
+		List<Pair<Order, List<Path>>> pathThroughOrders = PizzaSystem.getInstance().buildPathThroughOrders(initialLocation);
+		if (pathThroughOrders == null || pathThroughOrders.isEmpty()) {
+			resp.sendRedirect("/home");
+			return;
+		}
 //		System.out.println("current location after: " + PizzaSystem.getInstance().getCurrentLocation());
 		for (Pair<Order, List<Path>> pair: pathThroughOrders) {
 			List<Path> path = pair.getRight();
@@ -44,7 +50,7 @@ public class ShortestPathServlet extends HttpServlet {
 //			System.out.println("path:" + PathToStringConverter.convertToStringShortestPath(path, new District("Красносельский")));
 		}
 		String fullPath = PathToStringConverter.convertToStringPathThroughOrders(
-				pathThroughOrders, currentLocation);
+				pathThroughOrders, initialLocation);
 //		System.out.println(fullPath);
 		req.getSession().setAttribute("fullPath", fullPath);
 		req.getSession().removeAttribute("orders");

@@ -44,7 +44,7 @@ public class OrderTableGateway {
 	}
 
 	public void updateOrder(final int id, final District district, final String pizza_title) {
-		if (district != null) {
+		if (district != null && !district.name.isEmpty()) {
 			new CustomQueryExecutor() {
 				@Override
 				public void prepareStatement(PreparedStatement preparedStatement) throws SQLException {
@@ -53,7 +53,7 @@ public class OrderTableGateway {
 				}
 			}.init(UPDATE_ORDER_DISTRICT_QUERY).execute();
 		}
-		if (pizza_title != null) {
+		if (pizza_title != null && !pizza_title.isEmpty()) {
 			new CustomQueryExecutor() {
 				@Override
 				public void prepareStatement(PreparedStatement preparedStatement) throws SQLException {

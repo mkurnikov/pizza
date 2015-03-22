@@ -17,6 +17,8 @@ public class HomeServlet extends HttpServlet {
 //		req.setAttribute("paths", CityMap.getInstance().getAllPaths().toString());
 //		req.setAttribute("districts", CityMap.getInstance().getAllDistricts());
 //		CityMap.getInstance().createImageWithCityMap();
+//		System.out.println("/home servlet called");
+//		req.getSession().removeAttribute("orders");
 		req.getSession().setAttribute("orders", PizzaSystem.getInstance().getOrders());
 		req.getRequestDispatcher("/jsp/home.jsp").forward(req, resp);
 	}

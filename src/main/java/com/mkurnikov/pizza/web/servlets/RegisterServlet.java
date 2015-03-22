@@ -25,7 +25,8 @@ public class RegisterServlet extends HttpServlet {
 		AuthService authService = AuthService.getInstance();
 		if (!authService.isLoginExists(login)) {
 			authService.registerUser(username, login, password);
-			req.getSession().setAttribute("login", username);
+			req.getSession().setAttribute("login", login);
+			req.getSession().setAttribute("username", username);
 			resp.sendRedirect("/home");
 		} else {
 			req.setAttribute("error_message", "This login already exists.");

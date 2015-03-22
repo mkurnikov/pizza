@@ -1,9 +1,9 @@
 -- users
 INSERT INTO pizza_user (login, name, password, role)
-VALUES ('admin', 'admin', 'admin', 1);
+VALUES ('admin', 'Админ', 'admin', 1);
 
 INSERT INTO pizza_user (login, name, password, role)
-VALUES ('client', 'client', 'client', 0);
+VALUES ('client', 'Клиент', 'client', 0);
 
 -- districts
 INSERT INTO district (name) VALUES
@@ -32,7 +32,19 @@ INSERT INTO path (district_1, district_2, travelling_time) VALUES
   ('Приморский', 'Центральный', 26),
   ('Курортный', 'Пушкинский', 15),
   ('Пушкинский', 'Фрунзенский', 18),
-  ('Фрунзенский', 'Центральный', 28);
+  ('Фрунзенский', 'Центральный', 28),
+
+  ('Красносельский', 'Красносельский', 0.0),
+  ('Кронштадский', 'Кронштадский', 0.0),
+  ('Курортный', 'Курортный', 0.0),
+  ('Московский', 'Московский', 0.0),
+  ('Невский', 'Невский', 0.0),
+  ('Петроградский', 'Петроградский', 0.0),
+  ('Петродворцовый', 'Петродворцовый', 0.0),
+  ('Пушкинский', 'Пушкинский', 0.0),
+  ('Фрунзенский', 'Фрунзенский', 0.0),
+  ('Приморский', 'Приморский', 0.0),
+  ('Центральный', 'Центральный', 0.0);
 
 -- orders
 INSERT INTO pizza_order (client, district, pizza_title) VALUES

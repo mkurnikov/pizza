@@ -25,8 +25,8 @@ public class PathToStringConverter {
 			} else if (path.secondDistrict.equals(first)) {
 				first = path.firstDistrict;
 			} else {
-				throw new RuntimeException("something wrong here, " + "path: " + path + ", first: " + first
-						+ ", shortest: " + shortestPath + ", source: " + source);
+				throw new RuntimeException("something wrong here, " + "\npath: " + path + ", \nfirst: " + first
+						+ ", \nshortest: " + shortestPath + ", \nsource: " + source);
 			}
 			parts.add(Double.toString(path.travellingTime));
 			parts.add(first.name);

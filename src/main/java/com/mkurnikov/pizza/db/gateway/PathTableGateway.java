@@ -29,14 +29,14 @@ public class PathTableGateway {
 		return instance;
 	}
 
-	public void addPath(final String firstDistrictName, final String secondDistrictName, final float travellingTime) {
+	public void addPath(final String firstDistrictName, final String secondDistrictName, final double travellingTime) {
 		new CustomQueryExecutor() {
 
 			@Override
 			public void prepareStatement(PreparedStatement preparedStatement) throws SQLException {
 				preparedStatement.setString(1, firstDistrictName);
 				preparedStatement.setString(2, secondDistrictName);
-				preparedStatement.setFloat(3, travellingTime);
+				preparedStatement.setDouble(3, travellingTime);
 			}
 		}.init(this.ADD_PATH_QUERY).execute();
 	}

@@ -9,9 +9,9 @@ public class Path implements Serializable {
 	//		private boolean written = false;
 		public District firstDistrict;
 		public District secondDistrict;
-		public float travellingTime;
+		public double travellingTime;
 
-		public Path(District first, District second, float travellingTime) {
+		public Path(District first, District second, double travellingTime) {
 			this.firstDistrict = first;
 			this.secondDistrict = second;
 			this.travellingTime = travellingTime;

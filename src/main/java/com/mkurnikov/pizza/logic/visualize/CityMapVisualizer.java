@@ -98,14 +98,14 @@ public class CityMapVisualizer {
 				Color.WHITE, true, null);
 	}
 
-	public void saveToImage(String fpath) {
-		BufferedImage image = getAsImage();
-		try {
-			ImageIO.write(image, "PNG", new File(fpath));
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
+//	public void saveToImage(String fpath) {
+//		BufferedImage image = getAsImage();
+//		try {
+//			ImageIO.write(image, "PNG", new File(fpath));
+//		} catch (IOException e) {
+//			throw new RuntimeException(e);
+//		}
+//	}
 
 	private Map<String, Object> getCells() {
 		return ((mxGraphModel) graph.getModel()).getCells();

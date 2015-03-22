@@ -75,6 +75,7 @@ public class PizzaSystem {
 		District destination = new District(districtName);
 		OrderTableGateway.getInstance().addOrder(user, destination, pizza_title);
 		orders = OrderTableGateway.getInstance().getOrderList();
+//		buildPathThroughOrders();
 	}
 
 	public void updateOrder(int id, String districtName, String pizza_title) {
@@ -87,8 +88,12 @@ public class PizzaSystem {
 		orders = OrderTableGateway.getInstance().getOrderList();
 	}
 
-	public List<Pair<Order, List<Path>>> buildPathThroughOrders() {
-		currentLocation = new District("Красносельский");
+	public List<Pair<Order, List<Path>>> buildPathThroughOrders(District initialLocation) {
+		orders = OrderTableGateway.getInstance().getOrderList();
+		if (orders == null || orders.isEmpty()) {
+			return null;
+		}
+		currentLocation = initialLocation;
 		sources = new ArrayList<>();
 		pathThroughOrders = new ArrayList<>();
 		List<Order> orders_to_complete = getCopyOfOrders();
@@ -106,6 +111,10 @@ public class PizzaSystem {
 	}
 
 	public void showOrderCompletionPath(Order order) {
+		if (order == null) {
+			cityMap.setCurrentShortestPath(null);
+			return;
+		}
 		cityMap.setCurrentShortestPath(getShortestPathByOrderInList(order));
 	}
 

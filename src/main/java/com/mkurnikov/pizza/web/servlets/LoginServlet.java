@@ -1,6 +1,10 @@
 package com.mkurnikov.pizza.web.servlets;
 
+import com.mkurnikov.pizza.db.gateway.UserTableGateway;
 import com.mkurnikov.pizza.logic.auth.AuthService;
+import com.mkurnikov.pizza.logic.auth.models.Admin;
+import com.mkurnikov.pizza.logic.auth.models.User;
+import com.mkurnikov.pizza.logic.auth.models.UserRole;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -23,6 +27,10 @@ public class LoginServlet extends HttpServlet {
 
 		if (AuthService.getInstance().checkUser(login, password)) {
 			req.getSession().setAttribute("login", login);
+
+			User user = UserTableGateway.getInstance().findUserByLogin(login);
+			req.getSession().setAttribute("username", user.getUsername());
+			req.getSession().setAttribute("admin", user instanceof Admin);
 			resp.sendRedirect("/home");
 		} else {
 			req.setAttribute("error_message", "invalid credentials");

@@ -11,6 +11,11 @@
     <style>
         .order:hover {
             cursor: pointer;
+            background-color: #afd9ee;
+        }
+
+        .active {
+            background-color: #888888;
         }
     </style>
 </head>
@@ -18,26 +23,26 @@
 <body>
 <script type="text/javascript">
     var shortest = function (target) {
-//        alert('clicked!');
         var link = '/shortest?id=' + target.find('.id').html() + "&source=" + target.find('.source').html();
-//        alert(link);
         window.location.href = link;
-
-//        $.get('/shortest', {
-//            data: {'id': target.find('.id').html()},
-//            async: true
-//        });
     };
 </script>
 <div class="container">
-    <div class="col-md-9">
-        <h2>Hello, ${sessionScope.login}</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Здравствуйте, ${sessionScope.username}</h2>
+        </div>
+        <div class="col-md-6">
+            <h3 style="text-align: right;">
+                <a href="/orders">Управление заказами</a>
+                <c:if test="${sessionScope.admin == true}">
+                    |
+                    <a href="/admin">Управление путями</a>
+                </c:if>
+            </h3>
+        </div>
     </div>
-    <div class="col-md-3">
-        <h3>
-            <a href="/orders">Сделать заказ</a>
-        </h3>
-    </div>
+
     <div class="col-md-6">
         <table class="table">
             <h3>Пути к заказам</h3>
@@ -72,19 +77,6 @@
                     </c:forEach>
                 </c:otherwise>
             </c:choose>
-            <%--<c:if test="${sessionScope.orders_sorted != null}">--%>
-
-            <%--</c:if>--%>
-            <%--<c:if test="${sessionScope.orders != null}">--%>
-            <%--<c:forEach items="${sessionScope.orders}" var="order">--%>
-            <%--<tr>--%>
-            <%--<td>${order.orderId}</td>--%>
-            <%--<td>---</td>--%>
-            <%--<td>${order.destination.name}</td>--%>
-            <%--<td>---</td>--%>
-            <%--</tr>--%>
-            <%--</c:forEach>--%>
-            <%--</c:if>--%>
             </tbody>
         </table>
     </div>
@@ -96,18 +88,20 @@
             <h3>Кратчайший путь для заказа</h3>
             <br/>
             <p>${sessionScope.currentPath}</p>
-            <%--<p><b>Красносельский</b> -> 10.0 -> Кронштадский -> 12.0 -> <b>Невский</b></p>--%>
         </div>
         <div class="col-md-12">
             <h3>Полный путь для всех заказов</h3>
-            <%--<p><b>Красносельский</b> -> 10.0 -> Кронштадский -> 12.0 -> <b>Невский</b> -> 16.0 ->--%>
-            <%--<b>Красносельский</b> -> 10.0 -> Кронштадский -> 12.0 -> <b>Невский</b></p>--%>
             <p>${sessionScope.fullPath}</p>
         </div>
     </div>
     <div class="col-md-2">
-        <form action="/shortest" method="post">
-            <input type="submit" value="Найти пути"/>
+        <form role="form" action="/shortest" method="post">
+            <div class="form-group">
+                <label for="position">Расположение вагончика</label>
+                <input type="text" class="form-control" name="startPosition"
+                       value="Красносельский" id="position"/>
+            </div>
+            <input class="btn btn-lg btn-primary" type="submit" value="Найти пути"/>
         </form>
     </div>
 </div>

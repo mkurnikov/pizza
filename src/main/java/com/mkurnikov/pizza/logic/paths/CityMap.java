@@ -92,6 +92,17 @@ public class CityMap {
 	public List<Path> findShortestWay(District source, District destination) {
 		dijkstraAlgorithm.execute(source);
 		List<District> districtsPath = dijkstraAlgorithm.getShortestPath(destination);
+		if (districtsPath == null) {
+			List<Path> paths = new ArrayList<>();
+			for (Path path: PathTableGateway.getInstance().getAllPaths()) {
+				if (path.isConnectDistricts(source, destination)) {
+					paths.add(path);
+					return paths;
+				}
+			}
+			throw new RuntimeException("districts aren't connected");
+		}
+//		System.out.println(districtsPath.toString());
 		List<Path> shortestWayInPaths = new ArrayList<>();
 
 		for(int i = 0; i < districtsPath.size() - 1; i++) {

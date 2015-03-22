@@ -116,10 +116,13 @@ public class DijkstraAlgorithm {
 		return distance;
 	}
 
-	public LinkedList<District> getShortestPath(District target) {
-		LinkedList<District> shortestPath = new LinkedList<>();
+	public List<District> getShortestPath(District target) {
+
+		List<District> shortestPath = new ArrayList<>();
 		District step = target;
 		if (predecessors.get(step) == null) {
+			System.out.println("return null!");
+			System.out.println("predecessors: " + predecessors);
 			return null;
 		}
 		shortestPath.add(step);

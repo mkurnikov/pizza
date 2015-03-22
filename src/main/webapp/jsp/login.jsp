@@ -1,23 +1,31 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-<!DOCTYPE html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page session="true" %>
 <html>
 <head>
     <meta charset="utf-8"/>
     <title>Pizza Delivery</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/styles.css"/>
+    <script type="text/javascript" src="/js/jquery-1.11.2.js"></script>
 </head>
 <body>
-<form action="/login" method="post">
-    <p>Login</p>
-    <c:if test="${requestScope.error_message}">${requestScope.error_message}</c:if>
-    <input type="text" name="login" placeholder="username"/>
-    <input type="password" name="password" placeholder="password"/>
-    <input type="checkbox" name="remember" value="Remember me" checked="checked"/>
-    <input type="submit" value="Submit"/>
-    <br/>
-    <a href="/register">Register</a>
-</form>
+<div class="container">
+    <h2>Вход</h2>
+    <form class="form-inline" role="form" action="/login" method="post">
+        <c:if test="${requestScope.error_message}">${requestScope.error_message}</c:if>
+        <div class="form-group">
+            <label for="login">Логин:</label>
+            <input type="text" class="form-control" name="login" id="login"/>
+        </div>
+        <div class="form-group">
+            <label for="pwd">Пароль:</label>
+            <input type="password" class="form-control" name="password" id="pwd"/>
+        </div>
+        <button type="submit" class="btn btn-default">Залогиниться</button>
+    </form>
+    <%--<br/>--%>
+    <a href="/register">Зарегистрироваться</a>
+</div>
 </body>
 </html>
