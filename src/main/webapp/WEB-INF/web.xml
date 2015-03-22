@@ -17,19 +17,6 @@
     </resource-ref>
 
     <filter>
-        <filter-name>LogFilter</filter-name>
-        <filter-class>com.mkurnikov.pizza.web.LogFilter</filter-class>
-        <init-param>
-            <param-name>test-param</param-name>
-            <param-value>Init Param</param-value>
-        </init-param>
-    </filter>
-    <filter-mapping>
-        <filter-name>LogFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
-    <filter>
         <filter-name>EncodingFilter</filter-name>
         <filter-class>com.mkurnikov.pizza.web.filters.EncodingFilter</filter-class>
     </filter>

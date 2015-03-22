@@ -3,12 +3,9 @@ package com.mkurnikov.pizza.web.servlets;
 import com.mkurnikov.pizza.db.gateway.DistrictTableGateway;
 import com.mkurnikov.pizza.logic.PizzaSystem;
 import com.mkurnikov.pizza.logic.auth.models.Order;
-import com.mkurnikov.pizza.logic.paths.CityMap;
 import com.mkurnikov.pizza.logic.paths.models.District;
 import com.mkurnikov.pizza.logic.paths.models.Path;
-import com.mkurnikov.pizza.web.utils.OrderSorted;
 import com.mkurnikov.pizza.web.utils.PathToStringConverter;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.servlet.ServletException;
@@ -16,8 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ShortestPathServlet extends HttpServlet {
@@ -28,7 +23,7 @@ public class ShortestPathServlet extends HttpServlet {
 //		System.out.println("ID : " + id);
 		PizzaSystem.getInstance().showOrderCompletionPath(PizzaSystem.getInstance().getOrderByID(id));
 		req.getSession().setAttribute("currentPath",
-				PathToStringConverter.convertToStringShortestPath(
+				PathToStringConverter.convertShortestPath(
 						PizzaSystem.getInstance().getCurrentShortestPath(), new District(source)));
 		resp.sendRedirect("/home");
 	}
@@ -56,9 +51,9 @@ public class ShortestPathServlet extends HttpServlet {
 		for (Pair<Order, List<Path>> pair: pathThroughOrders) {
 			List<Path> path = pair.getRight();
 //			System.out.println("list:" + path.toString());
-//			System.out.println("path:" + PathToStringConverter.convertToStringShortestPath(path, new District("Красносельский")));
+//			System.out.println("path:" + PathToStringConverter.convertShortestPath(path, new District("Красносельский")));
 		}
-		String fullPath = PathToStringConverter.convertToStringPathThroughOrders(
+		String fullPath = PathToStringConverter.convertPathThroughOrders(
 				pathThroughOrders, initialLocation);
 //		System.out.println(fullPath);
 		req.getSession().setAttribute("fullPath", fullPath);

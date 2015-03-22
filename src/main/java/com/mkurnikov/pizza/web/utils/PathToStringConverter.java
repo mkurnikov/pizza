@@ -13,7 +13,7 @@ import java.util.List;
 public class PathToStringConverter {
 	public static String separator = " -> ";
 
-	public static String convertToStringShortestPath(List<Path> shortestPath, District source) {
+	public static String convertShortestPath(List<Path> shortestPath, District source) {
 //		String result = "";
 		List<String> parts = new ArrayList<>();
 		District first = source;
@@ -37,13 +37,13 @@ public class PathToStringConverter {
 		return StringUtils.join(parts.toArray(), separator);
 	}
 
-	public static String convertToStringPathThroughOrders(List<Pair<Order, List<Path>>> pathThroughOrders, District source) {
+	public static String convertPathThroughOrders(List<Pair<Order, List<Path>>> pathThroughOrders, District source) {
 		String result = "";
 		District first = source;
 		for (int i = 0; i < pathThroughOrders.size(); i++) {
 			List<Path> shortestPath = pathThroughOrders.get(i).getRight();
-			result = joinPathStrings(result, convertToStringShortestPath(shortestPath, first));
-//			result += convertToStringShortestPath(shortestPath, first);
+			result = joinPathStrings(result, convertShortestPath(shortestPath, first));
+//			result += convertShortestPath(shortestPath, first);
 			first = new District(unsurroundWithBold(
 					result.split(separator)[result.split(separator).length - 1]));
 //			System.out.println("first:" + first.name);
