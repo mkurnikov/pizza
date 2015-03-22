@@ -42,6 +42,28 @@ public class DijkstraAlgorithm {
 		}
 	}
 
+	public void updatePath(Path path) {
+//		int ind = -1;
+//		for (int i = 0; i < edges.size(); i++) {
+//			Path existing = edges.get(i);
+//			if (existing.equals(path)) {
+//				ind = i;
+//			}
+//		}
+		edges.set(edges.indexOf(path), path);
+	}
+
+	public void deletePath(Path path) {
+//		int ind = -1;
+//		for (int i = 0; i < edges.size(); i++) {
+//			Path existing = edges.get(i);
+//			if (existing.equals(path)) {
+//				ind = i;
+//			}
+//		}
+		edges.remove(edges.indexOf(path));
+	}
+
 	public void addDistrict(District district) {
 		if (!nodes.contains(district)) {
 			nodes.add(district);

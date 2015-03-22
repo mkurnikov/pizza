@@ -1,5 +1,6 @@
 package com.mkurnikov.pizza.web.servlets;
 
+import com.mkurnikov.pizza.db.gateway.DistrictTableGateway;
 import com.mkurnikov.pizza.logic.PizzaSystem;
 import com.mkurnikov.pizza.logic.auth.models.Order;
 import com.mkurnikov.pizza.logic.paths.CityMap;
@@ -35,6 +36,14 @@ public class ShortestPathServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		District initialLocation = new District(req.getParameter("startPosition"));
+		if (!DistrictTableGateway.getInstance().isDistrictExists(initialLocation.name)) {
+			req.getSession().setAttribute("find_path_error_message", "Такого района не существует.");
+			resp.sendRedirect("/home");
+			return;
+		} else {
+			req.getSession().removeAttribute("find_path_error_message");
+		}
+
 		//renew graph
 		PizzaSystem.getInstance().showOrderCompletionPath(null);
 

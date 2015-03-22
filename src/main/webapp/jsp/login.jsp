@@ -22,10 +22,15 @@
             <label for="pwd">Пароль:</label>
             <input type="password" class="form-control" name="password" id="pwd"/>
         </div>
-        <button type="submit" class="btn btn-default">Залогиниться</button>
+        <button type="submit" class="btn btn-primary">Залогиниться</button>
     </form>
     <%--<br/>--%>
     <a href="/register">Зарегистрироваться</a>
+    <c:if test="${requestScope.error_message != null}">
+        <div class="alert alert-warning">
+            <strong>Ошибка!</strong> Сообщение: ${requestScope.error_message}.
+        </div>
+    </c:if>
 </div>
 </body>
 </html>

@@ -19,10 +19,7 @@ public class District implements Serializable {
 	}
 
 	public void save() {
-		System.out.println("call district save() with" + this.toString());
-		boolean condition = DistrictTableGateway.getInstance().isDistrictExists(this.name);
-		System.out.println("District exists: " + condition);
-		if (!condition) {
+		if (!DistrictTableGateway.getInstance().isDistrictExists(this.name)) {
 			DistrictTableGateway.getInstance().addDistrict(this.name);
 		}
 	}

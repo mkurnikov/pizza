@@ -53,6 +53,11 @@
             </div>
             <button type="submit" class="btn btn-success">Создать заказ</button>
         </form>
+        <c:if test="${requestScope.create_error_message != null}">
+            <div class="alert alert-warning">
+                <strong>Ошибка!</strong> Сообщение: ${requestScope.create_error_message}.
+            </div>
+        </c:if>
         <h3>Изменить заказ</h3>
         <form class="form-inline" role="form" action="/orders/update" method="post">
             <div class="form-group">
@@ -69,6 +74,11 @@
             </div>
             <button type="submit" class="btn btn-success">Изменить заказ</button>
         </form>
+        <c:if test="${requestScope.update_error_message != null}">
+            <div class="alert alert-warning">
+                <strong>Ошибка!</strong> Сообщение: ${requestScope.update_error_message}.
+            </div>
+        </c:if>
         <h3>Удалить заказ</h3>
         <form class="form-inline" role="form" action="/orders/delete" method="post">
             <div class="form-group">
@@ -77,6 +87,11 @@
             </div>
             <button type="submit" class="btn btn-success">Удалить заказ</button>
         </form>
+        <c:if test="${requestScope.delete_error_message != null}">
+            <div class="alert alert-warning">
+                <strong>Ошибка!</strong> Сообщение: ${requestScope.delete_error_message}.
+            </div>
+        </c:if>
     </div>
 </div>
 

@@ -54,16 +54,33 @@ public class CityMap {
 		}
 		return paths;
 	}
-	public void addPath(String firstDistrictName, String secondDistrictName, float travellingTime) {
+
+	public void addPath(String firstDistrictName, String secondDistrictName, double travellingTime) {
 		District first = new District(firstDistrictName);
 		District second = new District(secondDistrictName);
 		Path path = new Path(first, second, travellingTime);
 
-		System.out.println("create path: " + path);
 		paths.add(path);
 		dijkstraAlgorithm.addPath(path);
 		path.save();
-		//	createImageWithCityMap();
+	}
+
+	public void updatePath(String firstDistrictName, String secondDistrictName, double travellingTime) {
+		District first = new District(firstDistrictName);
+		District second = new District(secondDistrictName);
+		Path path = new Path(first, second, travellingTime);
+		paths.set(paths.indexOf(path), path);
+		dijkstraAlgorithm.updatePath(path);
+		path.save();
+	}
+
+	public void deletePath(String firstDistrictName, String secondDistrictName) {
+		District first = new District(firstDistrictName);
+		District second = new District(secondDistrictName);
+		int ind = paths.indexOf(new Path(first, second, 0.0));
+		paths.remove(ind);
+		dijkstraAlgorithm.deletePath(new Path(first, second, 0.0));
+		PathTableGateway.getInstance().deletePath(firstDistrictName, secondDistrictName);
 	}
 
 	public Path findPathCorrespondsToDistricts(District source, District destination) {

@@ -10,7 +10,12 @@
 
 <body>
 <div class="container">
-    <h2>Здравствуйте, ${sessionScope.username}</h2>
+    <div class="col-md-9">
+        <h2>Здравствуйте, ${sessionScope.username}</h2>
+    </div>
+    <div class="col-md-3">
+        <h3><a href="/home">На главную</a></h3>
+    </div>
     <%--<br/>--%>
     <div class="col-md-6">
         <br/>

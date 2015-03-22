@@ -33,7 +33,7 @@ public class LoginServlet extends HttpServlet {
 			req.getSession().setAttribute("admin", user instanceof Admin);
 			resp.sendRedirect("/home");
 		} else {
-			req.setAttribute("error_message", "invalid credentials");
+			req.setAttribute("error_message", "Неправильно введены данные");
 			doGet(req, resp);
 		}
 	}

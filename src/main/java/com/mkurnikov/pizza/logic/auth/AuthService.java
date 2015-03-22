@@ -21,7 +21,6 @@ public class AuthService {
 	public boolean checkUser(String login, String password) {
 //		UserTableGateway userTableGateway = new UserTableGateway();
 		User user = this.userTableGateway.findUserByLogin(login);
-		System.out.println(user.toString());
 		if (user != null) {
 			return user.checkPassword(password);
 		}

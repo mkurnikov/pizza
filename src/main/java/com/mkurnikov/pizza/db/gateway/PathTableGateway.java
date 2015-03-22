@@ -18,6 +18,14 @@ public class PathTableGateway {
 	private final String ADD_PATH_QUERY = "INSERT INTO path(district_1, district_2, travelling_time) " +
 			"VALUES (?, ?, ?)";
 	private final String GET_ALL_PATHS_QUERY = "SELECT * FROM path;";
+	private final String GET_PATH_QUERY = "SELECT * FROM path " +
+			"WHERE ((district_1=? AND district_2=?) OR (district_2=? AND district_1=?)) AND travelling_time=?";
+	private final String GET_PATH_BY_DISTRICTS_QUERY = "SELECT * FROM path " +
+			"WHERE ((district_1=? AND district_2=?) OR (district_2=? AND district_1=?))";
+	private final String UPDATE_PATH = "UPDATE path SET travelling_time=? " +
+			"WHERE ((district_1=? AND district_2=?) OR (district_2=? AND district_1=?))";
+	private final String DELETE_PATH = "DELETE FROM path " +
+			"WHERE ((district_1=? AND district_2=?) OR (district_2=? AND district_1=?))";
 
 	private static PathTableGateway instance = null;
 	private PathTableGateway() {}
@@ -29,7 +37,8 @@ public class PathTableGateway {
 		return instance;
 	}
 
-	public void addPath(final String firstDistrictName, final String secondDistrictName, final double travellingTime) {
+	public void addPath(final String firstDistrictName, final String secondDistrictName,
+	                    final double travellingTime) {
 		new CustomQueryExecutor() {
 
 			@Override
@@ -39,6 +48,67 @@ public class PathTableGateway {
 				preparedStatement.setDouble(3, travellingTime);
 			}
 		}.init(this.ADD_PATH_QUERY).execute();
+	}
+
+	public boolean isPathExists(final String firstDistrictName, final String secondDistrictName,
+	                            final double travellingTime) {
+		return (boolean) new CustomQueryExecutor() {
+			@Override
+			public void prepareStatement(PreparedStatement preparedStatement) throws SQLException {
+				preparedStatement.setString(1, firstDistrictName);
+				preparedStatement.setString(2, secondDistrictName);
+				preparedStatement.setString(3, firstDistrictName);
+				preparedStatement.setString(4, secondDistrictName);
+				preparedStatement.setDouble(5, travellingTime);
+			}
+
+			@Override
+			public Object processResultSet(ResultSet resultSet) throws SQLException {
+				return resultSet.next();
+			}
+		}.init(GET_PATH_QUERY).execute();
+	}
+
+	public boolean isPathExistsByDistricts(final String firstDistrictName, final String secondDistrictName) {
+		return (boolean) new CustomQueryExecutor() {
+			@Override
+			public void prepareStatement(PreparedStatement preparedStatement) throws SQLException {
+				preparedStatement.setString(1, firstDistrictName);
+				preparedStatement.setString(2, secondDistrictName);
+				preparedStatement.setString(3, firstDistrictName);
+				preparedStatement.setString(4, secondDistrictName);
+			}
+
+			@Override
+			public Object processResultSet(ResultSet resultSet) throws SQLException {
+				return resultSet.next();
+			}
+		}.init(GET_PATH_BY_DISTRICTS_QUERY).execute();
+	}
+
+	public void updatePath(final String firstD, final String secondD, final double time) {
+		new CustomQueryExecutor() {
+			@Override
+			public void prepareStatement(PreparedStatement preparedStatement) throws SQLException {
+				preparedStatement.setString(1, firstD);
+				preparedStatement.setString(2, secondD);
+				preparedStatement.setString(3, firstD);
+				preparedStatement.setString(4, secondD);
+				preparedStatement.setDouble(5, time);
+			}
+		}.init(UPDATE_PATH).execute();
+	}
+
+	public void deletePath(final String firstD, final String secondD) {
+		new CustomQueryExecutor() {
+			@Override
+			public void prepareStatement(PreparedStatement preparedStatement) throws SQLException {
+				preparedStatement.setString(1, firstD);
+				preparedStatement.setString(2, secondD);
+				preparedStatement.setString(3, firstD);
+				preparedStatement.setString(4, secondD);
+			}
+		}.init(DELETE_PATH).execute();
 	}
 
 	public List<Path> getAllPaths() {

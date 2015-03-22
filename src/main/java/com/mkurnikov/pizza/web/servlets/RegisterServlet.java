@@ -18,8 +18,23 @@ public class RegisterServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String username = req.getParameter("username");
+		if (username == null || username.isEmpty()) {
+			req.setAttribute("error_message", "Введите имя пользователя");
+			doGet(req, resp);
+			return;
+		}
 		String login = req.getParameter("login");
+		if (login == null || login.isEmpty()) {
+			req.setAttribute("error_message", "Введите логин пользователя");
+			doGet(req, resp);
+			return;
+		}
 		String password = req.getParameter("password");
+		if (password == null || password.isEmpty()) {
+			req.setAttribute("error_message", "Введите пароль");
+			doGet(req, resp);
+			return;
+		}
 
 //		register user
 		AuthService authService = AuthService.getInstance();
@@ -29,8 +44,9 @@ public class RegisterServlet extends HttpServlet {
 			req.getSession().setAttribute("username", username);
 			resp.sendRedirect("/home");
 		} else {
-			req.setAttribute("error_message", "This login already exists.");
+			req.setAttribute("error_message", "Такой логин уже существует");
 			doGet(req, resp);
+			return;
 		}
 
 	}

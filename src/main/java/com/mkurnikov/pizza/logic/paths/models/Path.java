@@ -7,33 +7,48 @@ import java.io.Serializable;
 
 public class Path implements Serializable {
 	//		private boolean written = false;
-		public District firstDistrict;
-		public District secondDistrict;
-		public double travellingTime;
+	public District firstDistrict;
+	public District secondDistrict;
+	public double travellingTime;
 
-		public Path(District first, District second, double travellingTime) {
-			this.firstDistrict = first;
-			this.secondDistrict = second;
-			this.travellingTime = travellingTime;
-		}
+	public Path(District first, District second, double travellingTime) {
+		this.firstDistrict = first;
+		this.secondDistrict = second;
+		this.travellingTime = travellingTime;
+	}
 
-		public String toString() {
-			return "Path: " + this.firstDistrict.toString() +
-					", " + this.secondDistrict.toString() + ", " + this.travellingTime;
-		}
+	public String toString() {
+		return "Path: " + this.firstDistrict.toString() +
+				", " + this.secondDistrict.toString() + ", " + this.travellingTime;
+	}
 
-		public boolean isConnectDistricts(District d1, District d2) {
-			return (this.firstDistrict.equals(d1) && this.secondDistrict.equals(d2)) ||
-					(this.firstDistrict.equals(d2) && this.secondDistrict.equals(d1));
-		}
+	public boolean isConnectDistricts(District d1, District d2) {
+		return (this.firstDistrict.equals(d1) && this.secondDistrict.equals(d2)) ||
+				(this.firstDistrict.equals(d2) && this.secondDistrict.equals(d1));
+	}
 
-		public void save() {
-			this.firstDistrict.save();
-			this.secondDistrict.save();
-			System.out.println("call path save() with " + this.toString());
+	public void save() {
+		this.firstDistrict.save();
+		this.secondDistrict.save();
 
+		if (PathTableGateway.getInstance().
+				isPathExists(this.firstDistrict.name, this.secondDistrict.name, this.travellingTime)) {
+			PathTableGateway.getInstance()
+					.updatePath(this.firstDistrict.name, this.secondDistrict.name, this.travellingTime);
+		} else {
 			PathTableGateway.getInstance().addPath(this.firstDistrict.name, this.secondDistrict.name,
 					this.travellingTime);
-			//todo - algorithm for update paths to faster ones
 		}
+	}
+
+	public int hashCode() {
+		return this.toString().hashCode();
+	}
+
+	public boolean equals(Object o) {
+		if ( this == o ) return true;
+		if ( !(o instanceof Path) ) return false;
+
+		return ((Path) o).isConnectDistricts(this.firstDistrict, this.secondDistrict);
+	}
 }

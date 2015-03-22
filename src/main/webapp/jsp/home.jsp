@@ -83,7 +83,7 @@
     <div class="col-md-6">
         <img src="/img/map" alt="Карта не загрузилась" width="482" height="371"/>
     </div>
-    <div class="col-md-10">
+    <div class="col-md-9">
         <div class="col-md-12">
             <h3>Кратчайший путь для заказа</h3>
             <br/>
@@ -94,7 +94,8 @@
             <p>${sessionScope.fullPath}</p>
         </div>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-3">
+        <br/>
         <form role="form" action="/shortest" method="post">
             <div class="form-group">
                 <label for="position">Расположение вагончика</label>
@@ -103,6 +104,11 @@
             </div>
             <input class="btn btn-lg btn-primary" type="submit" value="Найти пути"/>
         </form>
+        <c:if test="${sessionScope.find_path_error_message != null}">
+            <div class="alert alert-warning">
+                <strong>Ошибка!</strong> Сообщение: ${sessionScope.find_path_error_message}
+            </div>
+        </c:if>
     </div>
 </div>
 <%--<p>Hello, ${requestScope.login}</p>--%>

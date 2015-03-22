@@ -9,6 +9,7 @@ import java.io.IOException;
 public class PathServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
 		String url = req.getRequestURL().toString();
 		if (url.endsWith("add")) {
 			System.out.println("Add path functionality called.");

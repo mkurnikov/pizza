@@ -115,7 +115,7 @@ public class OrderTableGateway {
 	}
 
 	public Order getOrderByID(final int id) {
-		return (Order) new CustomQueryExecutor() {
+		Object res = new CustomQueryExecutor() {
 			@Override
 			public void prepareStatement(PreparedStatement preparedStatement) throws SQLException {
 				preparedStatement.setInt(1, id);
@@ -123,11 +123,20 @@ public class OrderTableGateway {
 
 			@Override
 			public Object processResultSet(ResultSet resultSet) throws SQLException {
-				resultSet.next();
-				User user = UserTableGateway.getInstance().
-						findUserByLogin(resultSet.getString("client"));
-				return new Order(id, user, new District(resultSet.getString("district")), resultSet.getString("pizza_title"));
+				if (resultSet.next()) {
+					User user = UserTableGateway.getInstance().
+							findUserByLogin(resultSet.getString("client"));
+					return new Order(id, user, new District(resultSet.getString("district")),
+							resultSet.getString("pizza_title"));
+				} else {
+					return null;
+				}
 			}
 		}.init(SELECT_ORDER_BY_ID_QUERY).execute();
+		if (res != null) {
+			return (Order) res;
+		} else {
+			return null;
+		}
 	}
 }

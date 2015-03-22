@@ -25,10 +25,15 @@
         </div>
         <div class="form-group">
             <label for="pwd">Пароль:</label>
-            <input type="password" name="password" id="pwd"/>
+            <input type="password" class="form-control" name="password" id="pwd"/>
         </div>
-        <button type="submit" class="btn btn-default">Зарегистрироваться</button>
+        <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
     </form>
+    <c:if test="${requestScope.error_message != null}">
+        <div class="alert alert-warning">
+            <strong>Ошибка!</strong> Сообщение: ${requestScope.error_message}.
+        </div>
+    </c:if>
 </div>
 </body>
 </html>
