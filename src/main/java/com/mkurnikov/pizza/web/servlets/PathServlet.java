@@ -1,7 +1,9 @@
 package com.mkurnikov.pizza.web.servlets;
 
+import com.mkurnikov.pizza.db.gateway.DistrictTableGateway;
 import com.mkurnikov.pizza.logic.PizzaSystem;
 import com.mkurnikov.pizza.logic.paths.CityMap;
+import com.mkurnikov.pizza.logic.paths.models.District;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -10,6 +12,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class PathServlet extends HttpServlet {
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		CityMap.getInstance().renewVisualizer();
+		req.getRequestDispatcher("/jsp/admin.jsp").forward(req, resp);
+	}
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String source = req.getParameter("source");
@@ -21,16 +29,77 @@ public class PathServlet extends HttpServlet {
 
 		String url = req.getRequestURL().toString();
 		if (url.endsWith("add")) {
+			if (source == null || source.isEmpty()) {
+				sendRedirectWithMessage(req, resp, "create", "Введите начало пути");
+				return;
+			}
+			if (!DistrictTableGateway.getInstance().isDistrictExists(source)) {
+				sendRedirectWithMessage(req, resp, "create", "Такого начала пути не существует");
+				return;
+			}
+			if (destination == null || destination.isEmpty()) {
+				sendRedirectWithMessage(req, resp, "create", "Введите окончание пути");
+				return;
+			}
+			if (!DistrictTableGateway.getInstance().isDistrictExists(destination)) {
+				sendRedirectWithMessage(req, resp, "create", "Такого окончания пути не существует");
+				return;
+			}
+			if (time <= 0) {
+				sendRedirectWithMessage(req, resp, "create", "Время введено неправильно");
+				return;
+			}
 			CityMap.getInstance().addPath(source, destination, time);
 		}
-
 		if (url.endsWith("update")) {
-			System.out.println("Update path functionality called.");
+			if (source == null || source.isEmpty()) {
+				sendRedirectWithMessage(req, resp, "update", "Введите начало пути");
+				return;
+			}
+			if (!DistrictTableGateway.getInstance().isDistrictExists(source)) {
+				sendRedirectWithMessage(req, resp, "update", "Такого начала пути не существует");
+				return;
+			}
+			if (destination == null || destination.isEmpty()) {
+				sendRedirectWithMessage(req, resp, "update", "Введите окончание пути");
+				return;
+			}
+			if (!DistrictTableGateway.getInstance().isDistrictExists(destination)) {
+				sendRedirectWithMessage(req, resp, "update", "Такого окончания пути не существует");
+				return;
+			}
+			if (time <= 0) {
+				sendRedirectWithMessage(req, resp, "update", "Время введено неправильно");
+				return;
+			}
+			CityMap.getInstance().updatePath(source, destination, time);
 		}
 
 		if (url.endsWith("delete")) {
+			if (source == null || source.isEmpty()) {
+				sendRedirectWithMessage(req, resp, "delete", "Введите начало пути");
+				return;
+			}
+			if (!DistrictTableGateway.getInstance().isDistrictExists(source)) {
+				sendRedirectWithMessage(req, resp, "delete", "Такого начала пути не существует");
+				return;
+			}
+			if (destination == null || destination.isEmpty()) {
+				sendRedirectWithMessage(req, resp, "delete", "Введите окончание пути");
+				return;
+			}
+			if (!DistrictTableGateway.getInstance().isDistrictExists(destination)) {
+				sendRedirectWithMessage(req, resp, "delete", "Такого окончания пути не существует");
+				return;
+			}
 			CityMap.getInstance().deletePath(source, destination);
 		}
+		PizzaSystem.getInstance().renew();
 		resp.sendRedirect("/admin");
+	}
+
+	private void sendRedirectWithMessage(HttpServletRequest req, HttpServletResponse resp, String module, String message) throws ServletException, IOException {
+		req.setAttribute(module + "_error_message", message);
+		doGet(req, resp);
 	}
 }

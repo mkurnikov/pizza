@@ -86,15 +86,42 @@ public class PathTableGateway {
 		}.init(GET_PATH_BY_DISTRICTS_QUERY).execute();
 	}
 
-	public void updatePath(final String firstD, final String secondD, final double time) {
-		new CustomQueryExecutor() {
+	public Path getPathByDistricts(final String firstD, final String secondD) {
+		Object obj = new CustomQueryExecutor() {
 			@Override
 			public void prepareStatement(PreparedStatement preparedStatement) throws SQLException {
 				preparedStatement.setString(1, firstD);
 				preparedStatement.setString(2, secondD);
 				preparedStatement.setString(3, firstD);
 				preparedStatement.setString(4, secondD);
-				preparedStatement.setDouble(5, time);
+			}
+
+			@Override
+			public Object processResultSet(ResultSet resultSet) throws SQLException {
+				if (resultSet.next()) {
+					return new Path(new District(resultSet.getString("district_1")), new District(resultSet.getString("district_2")),
+							resultSet.getDouble("travelling_time"));
+				} else {
+					return null;
+				}
+			}
+		}.init(GET_PATH_BY_DISTRICTS_QUERY).execute();
+		if (obj == null) {
+			return null;
+		} else {
+			return (Path) obj;
+		}
+	}
+
+	public void updatePath(final String firstD, final String secondD, final double time) {
+		new CustomQueryExecutor() {
+			@Override
+			public void prepareStatement(PreparedStatement preparedStatement) throws SQLException {
+				preparedStatement.setDouble(1, time);
+				preparedStatement.setString(2, firstD);
+				preparedStatement.setString(3, secondD);
+				preparedStatement.setString(4, firstD);
+				preparedStatement.setString(5, secondD);
 			}
 		}.init(UPDATE_PATH).execute();
 	}

@@ -11,6 +11,15 @@ import java.awt.image.BufferedImage;
 import java.util.*;
 
 public class CityMap {
+	public static int findPathIndexInList(List<Path> paths, Path path) {
+		for (int i = 0; i < paths.size(); i++) {
+			if (paths.get(i).equals(path)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
 	private static CityMap instance = new CityMap();
 	public static CityMap getInstance() {
 		if (instance == null) {
@@ -30,6 +39,10 @@ public class CityMap {
 		dijkstraAlgorithm = new DijkstraAlgorithm(districts, paths);
 	}
 
+	public void renew() {
+		instance = new CityMap();
+	}
+
 	//	visualizer
 	private CityMapVisualizer initVisualizer() {
 		CityMapVisualizer visualizer = new CityMapVisualizer();
@@ -47,6 +60,10 @@ public class CityMap {
 		return visualizer.getAsImage();
 	}
 
+	public void renewVisualizer() {
+		currentShortestPath = null;
+	}
+
 	//	paths
 	public List<Path> getAllPaths() {
 		if (instance == null) {
@@ -61,26 +78,43 @@ public class CityMap {
 		Path path = new Path(first, second, travellingTime);
 
 		paths.add(path);
-		dijkstraAlgorithm.addPath(path);
+		if (!paths.equals(dijkstraAlgorithm.getEdges())) {
+			throw new RuntimeException("something wrong");
+		}
+//		dijkstraAlgorithm.addPath(path); - dijkstraAlgorithm.getEdges() == paths
 		path.save();
 	}
 
 	public void updatePath(String firstDistrictName, String secondDistrictName, double travellingTime) {
-		District first = new District(firstDistrictName);
-		District second = new District(secondDistrictName);
-		Path path = new Path(first, second, travellingTime);
-		paths.set(paths.indexOf(path), path);
-		dijkstraAlgorithm.updatePath(path);
+		Path path = PathTableGateway.getInstance().getPathByDistricts(firstDistrictName, secondDistrictName);
+		path.travellingTime = travellingTime;
+		int ind = CityMap.findPathIndexInList(paths, path);
+		if (ind == -1) {
+			throw new RuntimeException("something wrong with deletePath()");
+		}
+		paths.set(ind, path);
+		if (!paths.equals(dijkstraAlgorithm.getEdges())) {
+			throw new RuntimeException("something wrong");
+		}
+//		dijkstraAlgorithm.updatePath(path);
 		path.save();
 	}
 
 	public void deletePath(String firstDistrictName, String secondDistrictName) {
-		District first = new District(firstDistrictName);
-		District second = new District(secondDistrictName);
-		int ind = paths.indexOf(new Path(first, second, 0.0));
+//		System.out.println("DELETE" + (new Path(new District("1"), new District("2"), 1.0).equals(new Path(new District("2"), new District("1"), 2.0))));
+//		System.out.println(dijkstraAlgorithm.getEdges().equals(paths));
+//		System.out.println(dijkstraAlgorithm.getEdges() == paths);
+		Path path = PathTableGateway.getInstance().getPathByDistricts(firstDistrictName, secondDistrictName);
+		int ind = CityMap.findPathIndexInList(paths, path);
+		if (ind == -1) {
+			throw new RuntimeException("something wrong with deletePath()");
+		}
 		paths.remove(ind);
-		dijkstraAlgorithm.deletePath(new Path(first, second, 0.0));
-		PathTableGateway.getInstance().deletePath(firstDistrictName, secondDistrictName);
+		if (!paths.equals(dijkstraAlgorithm.getEdges())) {
+			throw new RuntimeException("something wrong");
+		}
+//		dijkstraAlgorithm.deletePath(path);
+		path.delete();
 	}
 
 	public Path findPathCorrespondsToDistricts(District source, District destination) {

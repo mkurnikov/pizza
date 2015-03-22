@@ -32,13 +32,17 @@ public class Path implements Serializable {
 		this.secondDistrict.save();
 
 		if (PathTableGateway.getInstance().
-				isPathExists(this.firstDistrict.name, this.secondDistrict.name, this.travellingTime)) {
+				isPathExistsByDistricts(this.firstDistrict.name, this.secondDistrict.name)) {
 			PathTableGateway.getInstance()
 					.updatePath(this.firstDistrict.name, this.secondDistrict.name, this.travellingTime);
 		} else {
 			PathTableGateway.getInstance().addPath(this.firstDistrict.name, this.secondDistrict.name,
 					this.travellingTime);
 		}
+	}
+
+	public void delete() {
+		PathTableGateway.getInstance().deletePath(this.firstDistrict.name, this.secondDistrict.name);
 	}
 
 	public int hashCode() {

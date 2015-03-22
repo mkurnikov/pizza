@@ -43,25 +43,23 @@ public class DijkstraAlgorithm {
 	}
 
 	public void updatePath(Path path) {
-//		int ind = -1;
-//		for (int i = 0; i < edges.size(); i++) {
-//			Path existing = edges.get(i);
-//			if (existing.equals(path)) {
-//				ind = i;
-//			}
-//		}
-		edges.set(edges.indexOf(path), path);
+		int ind = CityMap.findPathIndexInList(edges, path);
+		if (ind == -1) {
+			throw new RuntimeException("something wrong with deletePath()");
+		}
+		edges.set(ind, path);
 	}
 
 	public void deletePath(Path path) {
-//		int ind = -1;
-//		for (int i = 0; i < edges.size(); i++) {
-//			Path existing = edges.get(i);
-//			if (existing.equals(path)) {
-//				ind = i;
-//			}
-//		}
-		edges.remove(edges.indexOf(path));
+		int ind = CityMap.findPathIndexInList(edges, path);
+		if (ind == -1) {
+			throw new RuntimeException("something wrong with deletePath()");
+		}
+		edges.remove(ind);
+	}
+
+	public List<Path> getEdges() {
+		return edges;
 	}
 
 	public void addDistrict(District district) {
@@ -143,8 +141,6 @@ public class DijkstraAlgorithm {
 		List<District> shortestPath = new ArrayList<>();
 		District step = target;
 		if (predecessors.get(step) == null) {
-			System.out.println("return null!");
-			System.out.println("predecessors: " + predecessors);
 			return null;
 		}
 		shortestPath.add(step);

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page session="true" %>
 <html>
@@ -39,6 +40,11 @@
             </div>
             <button type="submit" class="btn btn-success">Добавить путь</button>
         </form>
+        <c:if test="${requestScope.create_error_message != null}">
+            <div class="alert alert-warning">
+                <strong>Ошибка!</strong> Сообщение: ${requestScope.create_error_message}.
+            </div>
+        </c:if>
 
         <h3>Изменить путь</h3>
         <form class="form-inline" role="form" action="/path/update" method="post">
@@ -56,6 +62,11 @@
             </div>
             <button type="submit" class="btn btn-success">Изменить путь</button>
         </form>
+        <c:if test="${requestScope.update_error_message != null}">
+            <div class="alert alert-warning">
+                <strong>Ошибка!</strong> Сообщение: ${requestScope.update_error_message}.
+            </div>
+        </c:if>
 
         <h3>Удалить путь</h3>
         <form class="form-inline" role="form" action="/path/delete" method="post">
@@ -67,12 +78,13 @@
                 <label for="destination_delete">Конец пути:</label>
                 <input type="text" class="form-control" name="destination" id="destination_delete"/>
             </div>
-            <%--<div class="form-group">--%>
-                <%--<label for="time_delete">Время пути:</label>--%>
-                <%--<input type="text" name="time" class="form-control" id="time_delete"/>--%>
-            <%--</div>--%>
             <button type="submit" class="btn btn-success">Удалить путь</button>
         </form>
+        <c:if test="${requestScope.delete_error_message != null}">
+            <div class="alert alert-warning">
+                <strong>Ошибка!</strong> Сообщение: ${requestScope.delete_error_message}.
+            </div>
+        </c:if>
     </div>
 </div>
 </body>

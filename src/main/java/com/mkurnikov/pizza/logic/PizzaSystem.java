@@ -30,6 +30,10 @@ public class PizzaSystem {
 		sources = new ArrayList<>();
 		currentLocation = new District("Красносельский");
 	}
+	public void renew() {
+		cityMap.renew();
+		instance = new PizzaSystem();
+	}
 
 	private CityMap cityMap;
 	private District currentLocation;

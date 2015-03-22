@@ -81,6 +81,7 @@ public class OrdersServlet extends HttpServlet {
 				}
 				PizzaSystem.getInstance().deleteOrder((int)id);
 			}
+			PizzaSystem.getInstance().renew();
 			req.getSession().removeAttribute("orders");
 			req.getSession().removeAttribute("orders_sorted");
 			req.getSession().setAttribute("orders", PizzaSystem.getInstance().getOrders());
