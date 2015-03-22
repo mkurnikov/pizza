@@ -1,6 +1,7 @@
 package com.mkurnikov.pizza.logic.auth;
 
 import com.mkurnikov.pizza.db.gateway.UserTableGateway;
+import com.mkurnikov.pizza.logic.auth.models.Client;
 import com.mkurnikov.pizza.logic.auth.models.User;
 
 public class AuthService {
@@ -39,7 +40,8 @@ public class AuthService {
 
 	public void registerUser(String username, String login, String password) {
 //		UserTableGateway userTableGateway = new UserTableGateway();
-		this.userTableGateway.addClient(username, login, password);
+		Client client = new Client(username, login, password);
+		client.save();
 	}
 
 }

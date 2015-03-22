@@ -11,7 +11,7 @@
 <body>
 <form action="/login" method="post">
     <p>Login</p>
-    <c:if test="${requestScope.loginFailed}">Login failed previously</c:if>
+    <c:if test="${requestScope.error_message}">${requestScope.error_message}</c:if>
     <input type="text" name="login" placeholder="username"/>
     <input type="password" name="password" placeholder="password"/>
     <input type="checkbox" name="remember" value="Remember me" checked="checked"/>

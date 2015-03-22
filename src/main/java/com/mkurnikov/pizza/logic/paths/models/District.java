@@ -2,10 +2,16 @@ package com.mkurnikov.pizza.logic.paths.models;
 
 import com.mkurnikov.pizza.db.gateway.DistrictTableGateway;
 
-public class District {
+import java.io.Serializable;
+
+public class District implements Serializable {
 	public String name;
 	public District(String name) {
 		this.name = name;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public String toString() {

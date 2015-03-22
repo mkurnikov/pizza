@@ -2,7 +2,7 @@
 CREATE TABLE pizza_user (
 --   user_id SERIAL NOT NULL PRIMARY KEY,
   login VARCHAR NOT NULL PRIMARY KEY,
-  name NVARCHAR NOT NULL,
+  name VARCHAR NOT NULL,
   password VARCHAR NOT NULL,
   role INTEGER NOT NULL
 );
@@ -26,6 +26,6 @@ CREATE TABLE pizza_order (
   order_id SERIAL NOT NULL PRIMARY KEY,
   client VARCHAR NOT NULL REFERENCES pizza_user(login),
   district VARCHAR NOT NULL REFERENCES district(name),
-  completed BOOLEAN DEFAULT FALSE
+  pizza_title VARCHAR NOT NULL
 );
 

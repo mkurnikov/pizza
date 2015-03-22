@@ -12,10 +12,6 @@ public class RegisterServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String failedMessage = (String) req.getAttribute("registrationFailed");
-		if (failedMessage != null) {
-			req.setAttribute("message", failedMessage);
-		}
 		req.getRequestDispatcher("/jsp/register.jsp").forward(req, resp);
 	}
 
@@ -30,10 +26,11 @@ public class RegisterServlet extends HttpServlet {
 		if (!authService.isLoginExists(login)) {
 			authService.registerUser(username, login, password);
 			req.getSession().setAttribute("login", username);
+			resp.sendRedirect("/home");
 		} else {
-			req.setAttribute("registrationFailed", "This login already exists.");
+			req.setAttribute("error_message", "This login already exists.");
 			doGet(req, resp);
 		}
-		resp.sendRedirect("/home");
+
 	}
 }

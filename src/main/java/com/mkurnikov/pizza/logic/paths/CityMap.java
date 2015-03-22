@@ -67,7 +67,7 @@ public class CityMap {
 	}
 
 	public Path findPathCorrespondsToDistricts(District source, District destination) {
-		System.out.println("findPathDistricts(): " + source + ", " + destination);
+//		System.out.println("findPathDistricts(): " + source + ", " + destination);
 		for (Path path: paths) {
 			if (path.isConnectDistricts(source, destination)) {
 				return path;
@@ -100,8 +100,16 @@ public class CityMap {
 			Path path = findPathCorrespondsToDistricts(src, dest);
 			shortestWayInPaths.add(path);
 		}
-		currentShortestPath = shortestWayInPaths;
+//		currentShortestPath = shortestWayInPaths;
 		return shortestWayInPaths;
+	}
+
+	public void setCurrentShortestPath(List<Path> path) {
+		currentShortestPath = path;
+	}
+
+	public List<Path> getCurrentShortestPath() {
+		return currentShortestPath;
 	}
 
 	public Map<District, Double> generateDistanceMap(District source, List<District> destinations) {
@@ -113,7 +121,7 @@ public class CityMap {
 
 	public District getNearestNeighbour(District source, List<District> destinations) {
 		Map<District, Double> distances = generateDistanceMap(source, destinations);
-		return Collections.max(distances.entrySet(), new Comparator<Map.Entry<District, Double>>() {
+		return Collections.min(distances.entrySet(), new Comparator<Map.Entry<District, Double>>() {
 			@Override
 			public int compare(Map.Entry<District, Double> o1, Map.Entry<District, Double> o2) {
 				return o1.getValue() > o2.getValue() ? 1 : -1;

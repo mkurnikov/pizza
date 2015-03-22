@@ -17,7 +17,7 @@
 <body>
 <form action="/register" method="post">
     <p>Register</p>
-    <c:if test="${requestScope.failedMessage}">${requestScope.failedMessage}</c:if>
+    <c:if test="${requestScope.error_message}">${requestScope.error_message}</c:if>
     <input type="text" name="username" placeholder="username"/>
     <input type="text" name="login" placeholder="login"/>
     <input type="password" name="password" placeholder="password"/>

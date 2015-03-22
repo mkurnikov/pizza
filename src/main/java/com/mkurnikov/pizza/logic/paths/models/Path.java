@@ -3,7 +3,9 @@ package com.mkurnikov.pizza.logic.paths.models;
 import com.mkurnikov.pizza.db.gateway.DistrictTableGateway;
 import com.mkurnikov.pizza.db.gateway.PathTableGateway;
 
-public class Path {
+import java.io.Serializable;
+
+public class Path implements Serializable {
 	//		private boolean written = false;
 		public District firstDistrict;
 		public District secondDistrict;

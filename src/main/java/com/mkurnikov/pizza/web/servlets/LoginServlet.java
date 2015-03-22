@@ -20,15 +20,12 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		String login = req.getParameter("login");
 		String password = req.getParameter("password");
-//		String isRememberChecked = req.getParameter("remember");
 
-		AuthService authService = AuthService.getInstance();
-		if (authService.checkUser(login, password)) {
-			HttpSession session = req.getSession();
-			session.setAttribute("login", login);
+		if (AuthService.getInstance().checkUser(login, password)) {
+			req.getSession().setAttribute("login", login);
 			resp.sendRedirect("/home");
 		} else {
-			req.setAttribute("loginFailed", true);
+			req.setAttribute("error_message", "invalid credentials");
 			doGet(req, resp);
 		}
 	}

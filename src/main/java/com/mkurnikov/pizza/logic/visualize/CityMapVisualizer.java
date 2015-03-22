@@ -39,7 +39,7 @@ public class CityMapVisualizer {
 				changeCellStyles(cell, styles.getUnactiveVertices());
 			}
 		}
-		System.out.println("styles defaulted");
+//		System.out.println("styles defaulted");
 	}
 
 	public void setShortestPath(List<Path> shortestPath) {
@@ -129,17 +129,6 @@ public class CityMapVisualizer {
 			Object v9 = graph.insertVertex(parent, "Пушкинский", "Пушкинский", 330 + x_offset, 140 + y_offset, width, height);
 			Object v10 = graph.insertVertex(parent, "Фрунзенский", "Фрунзенский", 350 + x_offset, 230 + y_offset, width, height);
 			Object v11 = graph.insertVertex(parent, "Центральный", "Центральный", 250 + x_offset, 330 + y_offset, width, height);
-//			districtCells.add((mxCell) v1);
-//			districtCells.add((mxCell) v2);
-//			districtCells.add((mxCell) v3);
-//			districtCells.add((mxCell) v4);
-//			districtCells.add((mxCell) v5);
-//			districtCells.add((mxCell) v6);
-//			districtCells.add((mxCell) v7);
-//			districtCells.add((mxCell) v8);
-//			districtCells.add((mxCell) v9);
-//			districtCells.add((mxCell) v10);
-//			districtCells.add((mxCell) v11);
 		} finally {
 			graph.getModel().endUpdate();
 		}
