@@ -47,44 +47,15 @@ public class ShortestPathServlet extends HttpServlet {
 			resp.sendRedirect("/home");
 			return;
 		}
-//		System.out.println("current location after: " + PizzaSystem.getInstance().getCurrentLocation());
-		for (Pair<Order, List<Path>> pair: pathThroughOrders) {
-			List<Path> path = pair.getRight();
-//			System.out.println("list:" + path.toString());
-//			System.out.println("path:" + PathToStringConverter.convertShortestPath(path, new District("Красносельский")));
-		}
+
+		System.out.println("building full path");
 		String fullPath = PathToStringConverter.convertPathThroughOrders(
 				pathThroughOrders, initialLocation);
-//		System.out.println(fullPath);
+
 		req.getSession().setAttribute("fullPath", fullPath);
 		req.getSession().removeAttribute("orders");
-//		List<OrderSorted> ordersSorted = new ArrayList<>();
 		req.getSession().setAttribute("orders_sorted", PizzaSystem.getInstance().getOrdersSorted());
 		resp.sendRedirect("/home");
-//		String source = req.getParameter("source");
-//		if (!CityMap.getInstance().isDistrictExists(source)) {
-//			req.setAttribute("error_message", "source doesnt exist");
-//			req.getRequestDispatcher("/home").forward(req, resp);
-//			return;
-//		}
-//
-//		String destination = req.getParameter("destination");
-//		if (!CityMap.getInstance().isDistrictExists(destination)) {
-//			req.setAttribute("error_message", "destination doesnt exist");
-//			req.getRequestDispatcher("/home").forward(req, resp);
-//			return;
-//		}
-//		if (source.equals(destination)) {
-//			req.setAttribute("error_message", "source equals destination");
-//			req.getRequestDispatcher("/home").forward(req, resp);
-//			return;
-//		}
-//
-//		List<Path> shortest = CityMap.getInstance().findShortestWay(new District(source),
-//				new District(destination));
-//		req.setAttribute("shortest", shortest.toString());
-//		req.getRequestDispatcher("/home").forward(req, resp);
-//		create visualization here
 	}
 
 

@@ -26,6 +26,7 @@
         var link = '/shortest?id=' + target.find('.id').html() + "&source=" + target.find('.source').html();
         window.location.href = link;
     };
+    <%--${sessionScope.}--%>
 </script>
 <div class="container">
     <div class="row">

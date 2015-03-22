@@ -25,14 +25,14 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <filter>
-        <filter-name>UnauthorizedUserFilter</filter-name>
-        <filter-class>com.mkurnikov.pizza.web.filters.UnauthorizedUserFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>UnauthorizedUserFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    <!--<filter>-->
+        <!--<filter-name>UnauthorizedUserFilter</filter-name>-->
+        <!--<filter-class>com.mkurnikov.pizza.web.filters.UnauthorizedUserFilter</filter-class>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>UnauthorizedUserFilter</filter-name>-->
+        <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
 
     <!--image servlet-->
     <servlet>

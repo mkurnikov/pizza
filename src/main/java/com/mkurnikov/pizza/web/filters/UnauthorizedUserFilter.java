@@ -26,7 +26,9 @@ public class UnauthorizedUserFilter implements Filter {
 
 		if (url.contains(".")) {
 			//pass
+			System.out.println("resource: " + url);
 			filterChain.doFilter(servletRequest, servletResponse);
+			return;
 		}
 		String login = (String) request.getSession().getAttribute("login");
 		if (login == null) {
@@ -45,13 +47,13 @@ public class UnauthorizedUserFilter implements Filter {
 			if (user instanceof Client) {
 				if (url.endsWith("admin")) {
 					//redirect tp /home
-					response.sendRedirect("/home");
 					System.out.println("login: " + login + ", executing: response.sendRedirect(\"/home\");");
+					response.sendRedirect("/home");
 
 				} else {
 					//pass
-					filterChain.doFilter(servletRequest, servletResponse);
 					System.out.println("login: " + login + ", executing: filterChain.doFilter(servletRequest, servletResponse);");
+					filterChain.doFilter(servletRequest, servletResponse);
 				}
 			}
 		}

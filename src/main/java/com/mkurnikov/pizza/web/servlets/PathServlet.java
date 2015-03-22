@@ -94,7 +94,10 @@ public class PathServlet extends HttpServlet {
 			}
 			CityMap.getInstance().deletePath(source, destination);
 		}
+		//renew
 		PizzaSystem.getInstance().renew();
+		req.getSession().removeAttribute("currentPath");
+		req.getSession().removeAttribute("fullPath");
 		resp.sendRedirect("/admin");
 	}
 
