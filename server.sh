@@ -1,4 +1,4 @@
-cd ../
+git clone https://github.com/mkurnikov/pizza.git
 sudo apt-get install git postgresql
 sudo add-apt-repository ppa:webupd8team/java
 sudo apt-get update
