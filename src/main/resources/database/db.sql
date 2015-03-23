@@ -1,0 +1,3 @@
+CREATE DATABASE pizza;
+CREATE USER mkurnikov WITH PASSWORD 'vfrcbv';
+GRANT ALL PRIVILEGES ON DATABASE pizza to mkurnikov;
