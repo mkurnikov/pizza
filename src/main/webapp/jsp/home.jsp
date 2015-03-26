@@ -31,16 +31,26 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6">
-            <h2>Здравствуйте, ${sessionScope.username}</h2>
+            <c:choose>
+                <c:when test="${sessionScope.username != null}">
+                    <h2>Здравствуйте, ${sessionScope.username}</h2>
+                </c:when>
+                <c:otherwise>
+                    <h2>Здравствуйте, Аноним</h2>
+                    <p>Для получения доступа к функциональности добавления заказов - <a href="/login">войдите</a>.</p>
+                </c:otherwise>
+            </c:choose>
         </div>
         <div class="col-md-6">
-            <h3 style="text-align: right;">
-                <a href="/orders">Управление заказами</a>
-                <c:if test="${sessionScope.admin == true}">
-                    |
-                    <a href="/admin">Управление путями</a>
-                </c:if>
-            </h3>
+            <c:if test="${sessionScope.username != null}">
+                <h3 style="text-align: right;">
+                    <a href="/orders">Управление заказами</a>
+                    <c:if test="${sessionScope.admin == true}">
+                        |
+                        <a href="/admin">Управление путями</a>
+                    </c:if>
+                </h3>
+            </c:if>
         </div>
     </div>
 
