@@ -34,6 +34,7 @@
             <c:choose>
                 <c:when test="${sessionScope.username != null}">
                     <h2>Здравствуйте, ${sessionScope.username}</h2>
+                    <p><a href="/login">Войти под другим именем</a></p>
                 </c:when>
                 <c:otherwise>
                     <h2>Здравствуйте, Аноним</h2>

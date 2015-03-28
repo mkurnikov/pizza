@@ -14,6 +14,7 @@
     <c:choose>
         <c:when test="${sessionScope.username != null}">
             <h2>Здравствуйте, ${sessionScope.username}</h2>
+            <p><a href="/login">Войти под другим именем</a></p>
         </c:when>
         <c:otherwise>
             <h2>Здравствуйте, Аноним</h2>
@@ -25,6 +26,9 @@
         <h3><a href="/login">Логин</a></h3>
         <h3><a href="/register">Зарегистрироваться</a></h3>
     </c:if>
+    <%--<form>--%>
+        <%--<input type="radio" name=""/>--%>
+    <%--</form>--%>
 </div>
 </body>
 </html>

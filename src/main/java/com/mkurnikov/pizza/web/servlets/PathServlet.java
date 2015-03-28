@@ -1,9 +1,11 @@
 package com.mkurnikov.pizza.web.servlets;
 
 import com.mkurnikov.pizza.db.gateway.DistrictTableGateway;
+import com.mkurnikov.pizza.db.gateway.PathTableGateway;
 import com.mkurnikov.pizza.logic.PizzaSystem;
 import com.mkurnikov.pizza.logic.paths.CityMap;
 import com.mkurnikov.pizza.logic.paths.models.District;
+import com.mkurnikov.pizza.logic.paths.models.Path;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -72,6 +74,9 @@ public class PathServlet extends HttpServlet {
 				sendRedirectWithMessage(req, resp, "update", "Время введено неправильно");
 				return;
 			}
+			if (!PathTableGateway.getInstance().isPathExistsByDistricts(source, destination)) {
+				sendRedirectWithMessage(req, resp, "update", "Такого пути не существует");
+			}
 			CityMap.getInstance().updatePath(source, destination, time);
 		}
 
@@ -92,12 +97,19 @@ public class PathServlet extends HttpServlet {
 				sendRedirectWithMessage(req, resp, "delete", "Такого окончания пути не существует");
 				return;
 			}
+			if (!PathTableGateway.getInstance().isPathExistsByDistricts(source, destination)) {
+				sendRedirectWithMessage(req, resp, "delete", "Такого пути не существует");
+			}
 			CityMap.getInstance().deletePath(source, destination);
 		}
 		//renew
 		PizzaSystem.getInstance().renew();
 		req.getSession().removeAttribute("currentPath");
 		req.getSession().removeAttribute("fullPath");
+
+		req.getSession().removeAttribute("orders");
+		req.getSession().removeAttribute("orders_sorted");
+		req.getSession().setAttribute("orders", PizzaSystem.getInstance().getOrders());
 		resp.sendRedirect("/admin");
 	}
 
